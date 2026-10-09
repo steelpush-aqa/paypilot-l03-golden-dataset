@@ -47,7 +47,7 @@
 | --- | --- | --- | --- |
 | Baseline | `clean` | 31/32 | `reports/golden-clean-20261008T172036.json` |
 | Дефектна система | `lesson-03` | 14/32 | `reports/golden-lesson-03-20261008T181145.json` |
-| Зміна промпту | `clean` + рядок | <N/M> | `reports/…` |
+| Зміна промпту | `clean` + рядок | 31/32 | `reports/golden-clean-20261009T071618.json` |
 
 DRAFT! Clean: 31/32. CMP-012 failed because the agent found two CloudServe transactions on September 8 (EUR and USD) and asked for clarification instead of resolving the complaint to TX-0201 and answering the duplicate_charge window of 60 days.
 
@@ -61,8 +61,17 @@ DRAFT! Clean: 31/32. CMP-012 failed because the agent found two CloudServe trans
 - **CMP-012 — буде червоним, але не через рядок.** Він уже падав на `clean`: агент попросив уточнення щодо двох платежів CloudServe. Його результат у третьому прогоні не показує дії рядка.
 - **CMP-011 — контроль, очікую PASS.** Опису відповідає одна транзакція (TX-0902, PharmaPlus), уточнювати нічого.
 - **Решта — без змін.** У DIS-* id транзакції вказано в питанні, CMP-004 — загальне питання без транзакції, FX/LIM/CMP-003/006/107 не стосуються дедлайнів спору.
-Коміт із прогнозом: `<hash>`
-Що впало: <id>. Розбіжність із прогнозом: <чим пояснюється або «немає»>
+Коміт із прогнозом: `b03d3ad`
+
+### Результат третього прогону
+- **<CMP-103> пройшов**, хоча я очікувала падіння. Агент знайшов обидві транзакції TechMart, перевір.ив їх окремо й правильно повернув дедлайни: 12 вересня для TX-0402 і 18 вересня для TX-0401. Новий рядок у промпті не змусив його зупинитися й просити уточнення:  answer    Good news and bad news:
+                TX-0402 (14 July, €240.00) — Unfortunately, this one is no longer disputable. The dispute window for
+                duplicate charges is 60 days, and that deadline passed on 12 September 2026. You are now outside the
+                window.
+                TX-0401 (20 July, €240.00) — This one *can* still be disputed. The 60-day window closes on 18 September
+                2026, so you have a few days left.
+Що впало: **<CMP-012> — залишився FAIL, але змінився характер помилки**. На clean агент просив уточнити, про яку транзакцію йдеться, і згадував правильне вікно у 60 днів. Після зміни промпту історія транзакцій так само недоступна через неправильний `account_id`, але агент уже впевнено називає 120 днів. Це не новий падіння кейсу, а зміна відповіді в уже нестабільному сценарії. Причину не можна однозначно приписати новому рядку промпту: транзакції не були отримані, тому агент відповідав без потрібних даних.
+Розбіжність із прогнозом: Прогноз щодо <CMP-103> не підтвердився: агент перевірив обидві транзакції окремо й надав правильні дедлайни, замість того щоб просити уточнення. У <CMP-012> відповідь змінилася з 60 на 120 днів, хоча кейс залишився FAIL.
 
 
 Дефекти профілю `lesson-03` (D19, D20, D21, D22, D26):
