@@ -49,8 +49,6 @@
 | Дефектна система | `lesson-03` | 14/32 | `reports/golden-lesson-03-20261008T181145.json` |
 | Зміна промпту | `clean` + рядок | 31/32 | `reports/golden-clean-20261009T071618.json` |
 
-DRAFT! Clean: 31/32. CMP-012 failed because the agent found two CloudServe transactions on September 8 (EUR and USD) and asked for clarification instead of resolving the complaint to TX-0201 and answering the duplicate_charge window of 60 days.
-
 
 Кейси з `gate: release` у прогін не входять, тому M менше за розмір набору.
 
